@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     AudioSource m_AudioSource;
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
+    private int isSprinting = 1;
+    private bool shiftKeyDown;
 
     void Start ()
     {
@@ -23,9 +25,20 @@ public class PlayerMovement : MonoBehaviour
     {
         float horizontal = Input.GetAxis ("Horizontal");
         float vertical = Input.GetAxis ("Vertical");
+
+        shiftKeyDown = Input.GetKey ("space");
+        if (shiftKeyDown == true)
+        {
+            isSprinting = 2;
+        }
+        else 
+        {
+            isSprinting = 1;
+        }
         
         m_Movement.Set(horizontal, 0f, vertical);
         m_Movement.Normalize ();
+        m_Movement *= isSprinting;
 
         bool hasHorizontalInput = !Mathf.Approximately (horizontal, 0f);
         bool hasVerticalInput = !Mathf.Approximately (vertical, 0f);
